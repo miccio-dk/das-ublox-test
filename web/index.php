@@ -1,11 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
 
-$filename = __DIR__.preg_replace('#(\?.*)$#', '', $_SERVER['REQUEST_URI']);
-if (php_sapi_name() === 'cli-server' && is_file($filename)) {
-	return false;
-}
-
 $app = new Silex\Application();
 $app['debug'] = true;
 
@@ -32,7 +27,7 @@ $app->register(new Herrera\Pdo\PdoServiceProvider(),
 );
 
 $app->mount('/ublox/settings', new UBlox\SettingsController());
-// $app->mount('/ublox/gps', new UBlox\GPSController());
+$app->mount('/ublox/gps', new UBlox\GPSController());
 // $app->mount('/ublox/sensors', new UBlox\SensorsController());
 
 $app->run();
