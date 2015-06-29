@@ -47,10 +47,13 @@ class GPSController implements ControllerProviderInterface {
 	}
 
 	public function getEntry(Application $app, $id) {
-		$gps = $app['pdo']->fetchAssoc('SELECT * FROM gps WHERE id = ?', $id);
+		$st = $app['pdo']->prepare('SELECT * FROM gps WHERE id = ?');
+		$st->bindValue(1, $id, PDO::PARAM_INT);
+		$st->execute();
+		$row = $st->fetch(PDO::FETCH_ASSOC);
 
-		if (0) {
-			$app->abort(HTTP_NOT_FOUND, "Parameter {$param} does not exist.");
+		if ($st->rowCount() == 0) {
+			$app->abort(HTTP_NOT_FOUND, "Entry with id = {$id} does not exist.");
 		}
 		return json_encode($gps);
 	}
