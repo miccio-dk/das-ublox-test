@@ -21,7 +21,7 @@ class GPSController implements ControllerProviderInterface {
 		);
 
 		$factory->get(
-			'/',
+			'/{id}',
 			'UBlox\GPSController::getEntry'
 		);
 
